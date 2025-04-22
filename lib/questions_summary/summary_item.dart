@@ -35,7 +35,7 @@ class SummaryItem extends StatelessWidget{
                 const SizedBox(height: 5),
                 Text(
                   itemData['correct_answer'] as String,
-                  style: GoogleFonts.lato(
+                  style: TextStyle(
                     color: Color.fromARGB(255, 181, 254, 246)
                   ),
                 ),
