@@ -5,7 +5,7 @@ import 'package:quiz_app_practice/results_screen.dart';
 import 'package:quiz_app_practice/start_screen.dart';
 
 final topAlignment = Alignment.topLeft;
-final bottomAlignment = Alignment.bottomRight;
+final endAlignment = Alignment.bottomRight;
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -15,7 +15,7 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  List<String> selectedAnswers = [];
+  List<String> selectedAnswer = [];
   var activeScreen = 'start-screen';
 
   void switchScreen() {
@@ -25,19 +25,32 @@ class _QuizState extends State<Quiz> {
   }
 
   void chooseAnswer(String answer) {
-    selectedAnswers.add(answer);
+    selectedAnswer.add(answer);
 
-    if (selectedAnswers.length == questions.length) {
-      activeScreen == 'results-screen';
+    if (selectedAnswer.length == questions.length) {
+      setState(() {
+        activeScreen = 'results-screen';
+      });
     }
+  }
+
+  void restartQuiz() {
+    setState(() {
+      selectedAnswer = [];
+      activeScreen = 'questions-screen';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Widget screenWidget = StartScreen(switchScreen);
 
-    if (activeScreen == "questions-screen") {
+    if (activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(chooseAnswer);
+    }    
+
+    if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(selectedAnswer, restartQuiz);
     }
 
     return MaterialApp(
@@ -51,7 +64,7 @@ class _QuizState extends State<Quiz> {
                 const Color.fromARGB(255, 17, 133, 200)
               ],
               begin: topAlignment,
-              end: bottomAlignment
+              end: endAlignment
             )
           ),
           child: screenWidget,
